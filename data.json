@@ -13,5 +13,20 @@
     "id": 10,
     "hours": 12,
     "timestamp": 1716071426377
+  },
+  {
+    "id": 2,
+    "hours": 7,
+    "timestamp": 1716072135535
+  },
+  {
+    "id": 3,
+    "hours": 9,
+    "timestamp": 1716072144601
+  },
+  {
+    "id": 11,
+    "hours": 5,
+    "timestamp": 1716072163402
   }
 ]
