@@ -111,7 +111,7 @@ app.delete('/sleep/:id', async (req, res) => {
     // Write the updated data back to the file
     await fs.writeFile("data.json", JSON.stringify(updatedUsers, null, 2));
     
-    res.redirect('/');
+    res.redirect('/all');
 });
 
 // To display all users data
