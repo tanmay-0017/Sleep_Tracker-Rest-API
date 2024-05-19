@@ -1,3 +1,8 @@
+// const dbConnect = require("./dbConnect.js");
+import dbConnect from "./dbConnect.js";
+
+import SleepRecord from './SleepRecord.js';
+
 // const express = require('express')
 import express from 'express';
 
@@ -29,8 +34,13 @@ app.get('/', (req, res) => {
 
 app.post('/sleep', async (req, res) => {
     var id = req.body.id;
+    // var userId = req.body.userId;
     var hours = req.body.hours;
     const timestamp = req.timestamp;
+
+    // if (!userId || !hours){
+    //     return res.status(400).send('Both userId and hours are required');
+    // }
 
     if (!id || !hours){
         return res.status(400).send('Both id and hours are required');
@@ -44,11 +54,20 @@ app.post('/sleep', async (req, res) => {
         "timestamp" : timestamp
     })
     fs.writeFile("data.json", JSON.stringify(users, null, 2));
+
     res.status(200).send({
         "id" : id,
         "hours" : hours,
         "timestamp" : timestamp
     })
+
+    // const newRecord = new SleepRecord({ 
+    //     "id" : id, 
+    //     "hours" : hours, 
+    //     "timestamp" : timestamp 
+    // });
+    // await newRecord.save();
+    // res.status(200).send(newRecord);
 })
 
 
@@ -76,18 +95,30 @@ app.post('/sleep', async (req, res) => {
 
 app.get('/sleep/:id', async (req, res) => {
     const id = Number(req.params.id);
+
     // Reading the file asynchronously
     const data = await fs.readFile("data.json", "utf-8");
     // Parsing JSON data 
     const users = JSON.parse(data);
-    // Find the user by id
-    const user = users.find(u => u.id === id);
+    // Filter the user by id and store in user array
+    const user = users.filter(u => u.id === id);
 
-    if (!user){
+    if (user.length === 0){
         return res.status(404).send("Sleep Entry not found");
     }
 
+    user.sort((x, y) => {
+        new Date(x.timestamp) - new Date(y.timestamp);
+    })
+    
     res.status(200).send(user);
+
+
+    // const record = await SleepRecord.findOne({ id });
+    // if (!record){
+    //     return res.status(404).send("Sleep Entry not found");
+    // }
+    // res.status(200).send(record);
 });
 
 
@@ -110,9 +141,17 @@ app.delete('/sleep/:id', async (req, res) => {
         
     // Write the updated data back to the file
     await fs.writeFile("data.json", JSON.stringify(updatedUsers, null, 2));
+
+
+    // const result = await SleepRecord.findOneAndDelete({ id });
+    // if (!result) {
+    //     return res.status(404).send('Sleep Entry not found');
+    // }
+
     
     res.redirect('/all');
 });
+
 
 // To display all users data
 app.get('/all', async (req, res) => {
@@ -120,6 +159,10 @@ app.get('/all', async (req, res) => {
         const data = await fs.readFile("data.json", "utf-8");
         const users = JSON.parse(data);
         res.send(users);
+
+
+        // const records = await SleepRecord.find({});
+        // res.status(200).send(records);
     } catch (error) {
         console.error("Error reading data:", error);
         res.status(500).send("Internal Server Error");
@@ -127,8 +170,10 @@ app.get('/all', async (req, res) => {
 });
 
 
+// Connect to MongoDB
+// dbConnect();
 
-
+// Start the server
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
