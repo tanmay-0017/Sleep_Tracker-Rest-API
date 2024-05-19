@@ -1,10 +1,7 @@
 import { expect } from 'chai';
-import request from 'supertest';
-import app from '../index.js';
+import { app } from '../index.js';
 import { promises as fs } from 'fs';
-
-
-
+import request from 'supertest';
 
 describe('API Endpoints', () => {
 
@@ -13,7 +10,8 @@ describe('API Endpoints', () => {
             request(app)
                 .get('/')
                 .end((err, res) => {
-                    expect(res).to.have.status(200);
+                    // expect(res).to.have.status(200);
+                    expect(res.status).to.equal(200)
                     expect(res.text).to.equal('Hello World!');
                     done();
                 });
@@ -27,7 +25,8 @@ describe('API Endpoints', () => {
                 .post('/sleep')
                 .send(newEntry)
                 .end(async (err, res) => {
-                    expect(res).to.have.status(200);
+                    // expect(res).to.have.status(200);
+                    expect(res.status).to.equal(200);
                     expect(res.body).to.include(newEntry);
                     const data = await fs.readFile('data.json', 'utf-8');
                     const users = JSON.parse(data);
@@ -45,7 +44,8 @@ describe('API Endpoints', () => {
                 .post('/sleep')
                 .send({ id: 13 })
                 .end((err, res) => {
-                    expect(res).to.have.status(400);
+                    // expect(res).to.have.status(400);
+                    expect(res.status).to.equal(400);
                     done();
                 });
         });
@@ -56,7 +56,8 @@ describe('API Endpoints', () => {
             request(app)
                 .get('/sleep/12')
                 .end((err, res) => {
-                    expect(res).to.have.status(200);
+                    // expect(res).to.have.status(200);
+                    expect(res.status).to.equal(200);
                     expect(res.body).to.deep.equal({
                         id: 12,
                         hours: 8,
@@ -70,7 +71,8 @@ describe('API Endpoints', () => {
             request(app)
                 .get('/sleep/99')
                 .end((err, res) => {
-                    expect(res).to.have.status(404);
+                    // expect(res).to.have.status(404);
+                    expect(res.status).to.equal(404);
                     done();
                 });
         });
@@ -81,7 +83,8 @@ describe('API Endpoints', () => {
             request(app)
                 .delete('/sleep/5')
                 .end(async (err, res) => {
-                    expect(res).to.have.status(200);
+                    // expect(res).to.have.status(302);
+                    expect(res.status).to.equal(302);
                     const data = await fs.readFile('data.json', 'utf-8');
                     const users = JSON.parse(data);
                     expect(users).to.not.deep.include({
@@ -97,7 +100,8 @@ describe('API Endpoints', () => {
             request(app)
                 .delete('/sleep/99')
                 .end((err, res) => {
-                    expect(res).to.have.status(404);
+                    // expect(res).to.have.status(404);
+                    expect(res.status).to.equal(404);
                     done();
                 });
         });

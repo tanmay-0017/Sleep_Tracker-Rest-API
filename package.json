@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "This is a rest API",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "node -e \"import('./test/setup.js').then(() => import('mocha/mocha.js')).then(mocha => mocha.cli.main(['./test/test.js'])).catch(console.error)\""
+    "test": "node ./node_modules/mocha/bin/mocha ./test/test.js"
   },
   "author": "",
   "license": "ISC",

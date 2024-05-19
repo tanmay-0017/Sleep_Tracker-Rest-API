@@ -1,9 +1,16 @@
-const express = require('express')
-const { readFile } = require('fs')
-const { stringify } = require('querystring')
+// const express = require('express')
+import express from 'express';
+
+// const { readFile } = require('fs')
+// const { stringify } = require('querystring')
+
 const app = express()
-const fs = require('fs').promises           // promises is used for asnc await calls
+
+// const fs = require('fs').promises                    // promises is used for asnc await calls
+import fs from 'fs/promises';                           // we are removing require keyword as mjs file doesn't except, instead use import
+
 const port = 3000
+
 
 // app.use(middleware)
 app.use(express.json())
@@ -19,10 +26,15 @@ app.get('/', (req, res) => {
 })
 
 
+
 app.post('/sleep', async (req, res) => {
     var id = req.body.id;
     var hours = req.body.hours;
     const timestamp = req.timestamp;
+
+    if (!id || !hours){
+        return res.status(400).send('Both id and hours are required');
+    }
 
     const data = await fs.readFile("data.json", "utf-8");
     const users = JSON.parse(data);             // Parse the JSON data into a javascript array
@@ -71,6 +83,10 @@ app.get('/sleep/:id', async (req, res) => {
     // Find the user by id
     const user = users.find(u => u.id === id);
 
+    if (!user){
+        return res.status(404).send("Sleep Entry not found");
+    }
+
     res.status(200).send(user);
 });
 
@@ -87,11 +103,27 @@ app.delete('/sleep/:id', async (req, res) => {
 
     // Remove the user with the specified ID and make new array with updated users
     const updatedUsers = users.filter(u => u.id !== id);
+
+    if (updatedUsers.length === users.length){
+        return res.status(404).send("Sleep Entry not found");
+    }
         
     // Write the updated data back to the file
     await fs.writeFile("data.json", JSON.stringify(updatedUsers, null, 2));
     
     res.redirect('/');
+});
+
+// To display all users data
+app.get('/all', async (req, res) => {
+    try {
+        const data = await fs.readFile("data.json", "utf-8");
+        const users = JSON.parse(data);
+        res.send(users);
+    } catch (error) {
+        console.error("Error reading data:", error);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 
@@ -100,3 +132,6 @@ app.delete('/sleep/:id', async (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+// module.exports = app;
+export {app};
