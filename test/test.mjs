@@ -20,7 +20,7 @@ describe('API Endpoints', () => {
 
     describe('POST /sleep', () => {
         it('should add a new sleep entry', (done) => {
-            const newEntry = { id: 13, hours: 7 };
+            const newEntry = { id: 5, hours: 7 };
             request(app)
                 .post('/sleep')
                 .send(newEntry)
@@ -31,7 +31,7 @@ describe('API Endpoints', () => {
                     const data = await fs.readFile('data.json', 'utf-8');
                     const users = JSON.parse(data);
                     expect(users).to.deep.include({
-                        id: 13,
+                        id: 5,
                         hours: 7,
                         timestamp: res.body.timestamp
                     });
@@ -52,17 +52,17 @@ describe('API Endpoints', () => {
     });
 
     describe('GET /sleep/:id', () => {
-        it('should return a sleep entry by id', (done) => {
+        it('should return sorted sleep entries by id', (done) => {
             request(app)
                 .get('/sleep/12')
                 .end((err, res) => {
                     // expect(res).to.have.status(200);
                     expect(res.status).to.equal(200);
-                    expect(res.body).to.deep.equal({
-                        id: 12,
-                        hours: 8,
-                        timestamp: 1716070974887
-                    });
+                    expect(res.body).to.be.an('array').that.is.not.empty;
+                    expect(res.body).to.deep.equal([
+                        { id: 12, hours: 8, timestamp: 1716070974887 },
+                        { id: 12, hours: 7, timestamp: 1716071036594 }
+                    ]);
                     done();
                 });
         });
