@@ -1,6 +1,6 @@
 # Sleep Tracker API
 
-A simple RESTful API for a sleep tracker app using Node.js and Express. The API allows users to manage their sleep records, including creating new records, updating existing ones, fetching sleep data, and deleting records. It's designed to be a simple yet efficient solution for tracking sleep patterns, offering seamless integration with various client applications.
+A simple RESTful API for a sleep tracker app using Node.js and Express. The API allows users to manage their sleep records, including creating new records, updating existing ones, fetching sleep data, and deleting records. It's designed to be a simple yet efficient solution for tracking sleep patterns, offering seamless integration with various client applications. MongoDB is utilized for seamless data storage and retrieval.
 
 ---
 
@@ -14,7 +14,7 @@ A simple RESTful API for a sleep tracker app using Node.js and Express. The API 
 ## Features
 
 - Allows users to submit their sleep duration along with a timestamp.
-- Retrieves a list of all sleep records for a given user.
+- Retrieves a list of all sleep records for a given user sorted by timestamp.
 - Retrieve all sleep records.
 - Delete a specific sleep record by its ID
 
@@ -117,6 +117,5 @@ The project includes a test suite to verify the functionality of the API endpoin
 
 Here's an example of what running the tests looks like:
 
-<img width="635" alt="Screenshot 2024-05-19 at 10 34 42 PM" src="https://github.com/tanmay-0017/Sleep_Tracker-Rest-API/assets/97460992/28be6b36-d671-4ad8-a758-ebb7ef342bd5">
-
+<img width="623" alt="Screenshot 2024-05-20 at 3 38 17 AM" src="https://github.com/tanmay-0017/Sleep_Tracker-Rest-API/assets/97460992/214061c9-3daf-4c66-9661-8f59e43b53de">
 
