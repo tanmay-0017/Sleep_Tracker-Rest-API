@@ -16,8 +16,5 @@ COPY . .
 # Expose the port the app runs on
 EXPOSE 3000
 
-# Define the environment variables
-ENV MONGODB_URI=your_mongodb_connection_string
-
 # Start the application
 CMD ["npm", "start"]
