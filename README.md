@@ -38,7 +38,7 @@ A simple RESTful API for a sleep tracker app using Node.js and Express. The API 
 
 4. Run tests:
     ```bash
-    npm test
+    npx mocha ./test/test.mjs
     ```
 
 ## API Endpoints
