@@ -14,7 +14,7 @@ const app = express()
 // const fs = require('fs').promises                    // promises is used for asnc await calls
 import fs from 'fs/promises';                           // we are removing require keyword as mjs file doesn't except, instead use import
 
-const port = 3000
+const port = process.env.PORT || 3000;
 
 
 // app.use(middleware)
